@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useLanguage } from "../LanguageContext";
 
 const DonateBlood = ({ contract }) => {
+  const { t } = useLanguage();
   const [component, setComponent] = useState("");
   const [loading, setLoading] = useState(false);
 
   const bloodComponents = [
-    "Whole Blood",
-    "PRC",  // Packed Red Cells
-    "FFP"   // Fresh Frozen Plasma
+    { value: "Whole Blood", label: t.donate.wholeBlood },
+    { value: "PRC", label: t.donate.prc },
+    { value: "FFP", label: t.donate.ffp }
   ];
 
   const handleDonation = async (e) => {
@@ -31,37 +33,28 @@ const DonateBlood = ({ contract }) => {
 
   return (
     <div className="donate-blood">
-      <h2>Donate Blood</h2>
+      <h2>{t.donate.title}</h2>
       <form onSubmit={handleDonation}>
-        <div>
-          <label>Blood Component:</label>
+        <div className="form-group">
+          <label>{t.donate.component}</label>
           <select
             value={component}
             onChange={(e) => setComponent(e.target.value)}
             required
           >
-            <option value="">Select Component</option>
+            <option value="">{t.donate.component}</option>
             {bloodComponents.map((comp) => (
-              <option key={comp} value={comp}>
-                {comp}
+              <option key={comp.value} value={comp.value}>
+                {comp.label}
               </option>
             ))}
           </select>
         </div>
 
         <button type="submit" disabled={loading}>
-          {loading ? "Processing..." : "Donate"}
+          {loading ? "Processing..." : t.donate.submit}
         </button>
       </form>
-
-      <div className="info-box">
-        <h3>Blood Components Information:</h3>
-        <ul>
-          <li><strong>Whole Blood:</strong> Complete blood donation</li>
-          <li><strong>PRC (Packed Red Cells):</strong> Concentrated red blood cells</li>
-          <li><strong>FFP (Fresh Frozen Plasma):</strong> Plasma separated from whole blood</li>
-        </ul>
-      </div>
     </div>
   );
 };

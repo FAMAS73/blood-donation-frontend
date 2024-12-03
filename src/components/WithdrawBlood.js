@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useLanguage } from "../LanguageContext";
 
 const WithdrawBlood = ({ contract }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     recipientBloodType: "",
     component: "",
@@ -10,7 +12,11 @@ const WithdrawBlood = ({ contract }) => {
   const [loading, setLoading] = useState(false);
 
   const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-  const bloodComponents = ["Whole Blood", "PRC", "FFP"];
+  const bloodComponents = [
+    { value: "Whole Blood", label: t.donate.wholeBlood },
+    { value: "PRC", label: t.donate.prc },
+    { value: "FFP", label: t.donate.ffp }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,17 +54,17 @@ const WithdrawBlood = ({ contract }) => {
 
   return (
     <div className="withdraw-blood">
-      <h2>Withdraw Blood</h2>
+      <h2>{t.withdraw.title}</h2>
       <form onSubmit={handleWithdraw}>
-        <div>
-          <label>Recipient Blood Type:</label>
+        <div className="form-group">
+          <label>{t.withdraw.recipientBloodType}</label>
           <select
             name="recipientBloodType"
             value={formData.recipientBloodType}
             onChange={handleChange}
             required
           >
-            <option value="">Select Blood Type</option>
+            <option value="">{t.withdraw.recipientBloodType}</option>
             {bloodTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -67,25 +73,25 @@ const WithdrawBlood = ({ contract }) => {
           </select>
         </div>
 
-        <div>
-          <label>Blood Component:</label>
+        <div className="form-group">
+          <label>{t.withdraw.component}</label>
           <select
             name="component"
             value={formData.component}
             onChange={handleChange}
             required
           >
-            <option value="">Select Component</option>
+            <option value="">{t.withdraw.component}</option>
             {bloodComponents.map((comp) => (
-              <option key={comp} value={comp}>
-                {comp}
+              <option key={comp.value} value={comp.value}>
+                {comp.label}
               </option>
             ))}
           </select>
         </div>
 
-        <div>
-          <label>Quantity (ml):</label>
+        <div className="form-group">
+          <label>{t.withdraw.quantity}</label>
           <input
             type="number"
             name="quantity"
@@ -98,8 +104,8 @@ const WithdrawBlood = ({ contract }) => {
           />
         </div>
 
-        <div>
-          <label>Hospital Name:</label>
+        <div className="form-group">
+          <label>{t.withdraw.hospital}</label>
           <input
             type="text"
             name="hospital"
@@ -110,23 +116,9 @@ const WithdrawBlood = ({ contract }) => {
         </div>
 
         <button type="submit" disabled={loading}>
-          {loading ? "Processing..." : "Withdraw Blood"}
+          {loading ? "Processing..." : t.withdraw.submit}
         </button>
       </form>
-
-      <div className="info-box">
-        <h3>Blood Type Compatibility Chart:</h3>
-        <ul>
-          <li>O- can donate to all blood types</li>
-          <li>O+ can donate to O+, A+, B+, AB+</li>
-          <li>A- can donate to A-, A+, AB-, AB+</li>
-          <li>A+ can donate to A+, AB+</li>
-          <li>B- can donate to B-, B+, AB-, AB+</li>
-          <li>B+ can donate to B+, AB+</li>
-          <li>AB- can donate to AB-, AB+</li>
-          <li>AB+ can only donate to AB+</li>
-        </ul>
-      </div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useLanguage } from "../LanguageContext";
 
 const RegisterDonor = ({ contract }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     bloodType: "",
@@ -52,10 +54,10 @@ const RegisterDonor = ({ contract }) => {
 
   return (
     <div className="register-donor">
-      <h2>Register as Donor</h2>
+      <h2>{t.register.title}</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+        <div className="form-group">
+          <label>{t.register.name}</label>
           <input
             type="text"
             name="name"
@@ -65,8 +67,8 @@ const RegisterDonor = ({ contract }) => {
           />
         </div>
 
-        <div>
-          <label>Blood Type:</label>
+        <div className="form-group">
+          <label>{t.register.bloodType}</label>
           <select
             name="bloodType"
             value={formData.bloodType}
@@ -82,8 +84,8 @@ const RegisterDonor = ({ contract }) => {
           </select>
         </div>
 
-        <div>
-          <label>Weight (kg):</label>
+        <div className="form-group">
+          <label>{t.register.weight}</label>
           <input
             type="number"
             name="weight"
@@ -94,8 +96,8 @@ const RegisterDonor = ({ contract }) => {
           />
         </div>
 
-        <div>
-          <label>Height (cm):</label>
+        <div className="form-group">
+          <label>{t.register.height}</label>
           <input
             type="number"
             name="height"
@@ -105,8 +107,8 @@ const RegisterDonor = ({ contract }) => {
           />
         </div>
 
-        <div>
-          <label>Age:</label>
+        <div className="form-group">
+          <label>{t.register.age}</label>
           <input
             type="number"
             name="age"
@@ -118,8 +120,8 @@ const RegisterDonor = ({ contract }) => {
           />
         </div>
 
-        <div>
-          <label>National ID:</label>
+        <div className="form-group">
+          <label>{t.register.nationalId}</label>
           <input
             type="text"
             name="nationalId"
@@ -129,7 +131,7 @@ const RegisterDonor = ({ contract }) => {
           />
         </div>
 
-        <div>
+        <div className="form-group checkbox">
           <label>
             <input
               type="checkbox"
@@ -137,11 +139,11 @@ const RegisterDonor = ({ contract }) => {
               checked={formData.hasDisease}
               onChange={handleChange}
             />
-            Has Disease
+            {t.register.hasDisease}
           </label>
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit">{t.register.submit}</button>
       </form>
     </div>
   );

@@ -3,28 +3,28 @@ import { ethers, BrowserProvider } from "ethers";
 import RegisterDonor from "./components/RegisterDonor";
 import DonateBlood from "./components/DonateBlood";
 import WithdrawBlood from "./components/WithdrawBlood";
+import DonorList from "./components/DonorList";
+import BloodInventory from "./components/BloodInventory";
 import { contractAddress, abi, setupNetwork } from "./contract/config";
+import { LanguageProvider, useLanguage } from "./LanguageContext";
 import "./App.css";
 
-const App = () => {
+const AppContent = () => {
   const [contract, setContract] = useState(null);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('actions');
+  const { t, language, toggleLanguage } = useLanguage();
 
   useEffect(() => {
     const init = async () => {
       try {
-        // Check if MetaMask is installed
         if (typeof window.ethereum === "undefined") {
           throw new Error("Please install MetaMask to use this application");
         }
 
-        // Request account access
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        
-        // Setup Sepolia network
         await setupNetwork();
 
-        // Setup provider and contract
         const provider = new BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const bloodDonationContract = new ethers.Contract(contractAddress, abi, signer);
@@ -37,7 +37,6 @@ const App = () => {
 
     init();
 
-    // Listen for account changes
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", () => window.location.reload());
       window.ethereum.on("chainChanged", () => window.location.reload());
@@ -55,18 +54,59 @@ const App = () => {
   }
 
   if (!contract) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (
     <div className="app-container">
-      <h1>Blood Donation System</h1>
-      <div className="components-container">
-        <RegisterDonor contract={contract} />
-        <DonateBlood contract={contract} />
-        <WithdrawBlood contract={contract} />
-      </div>
+      <header className="app-header">
+        <div className="header-content">
+          <h1>{t.title}</h1>
+          <button className="language-toggle" onClick={toggleLanguage}>
+            {language === 'en' ? 'ไทย' : 'English'}
+          </button>
+        </div>
+        <div className="main-nav">
+          <button 
+            className={`main-nav-button ${activeTab === 'actions' ? 'active' : ''}`}
+            onClick={() => setActiveTab('actions')}
+          >
+            {t.tabs.actions}
+          </button>
+          <button 
+            className={`main-nav-button ${activeTab === 'inventory' ? 'active' : ''}`}
+            onClick={() => setActiveTab('inventory')}
+          >
+            {t.tabs.inventory}
+          </button>
+        </div>
+      </header>
+
+      <main className="app-main">
+        {activeTab === 'actions' ? (
+          <>
+            <div className="components-container">
+              <RegisterDonor contract={contract} />
+              <DonateBlood contract={contract} />
+              <WithdrawBlood contract={contract} />
+            </div>
+            <div className="donor-list-container">
+              <DonorList contract={contract} />
+            </div>
+          </>
+        ) : (
+          <BloodInventory contract={contract} />
+        )}
+      </main>
     </div>
+  );
+};
+
+const App = () => {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 };
 
