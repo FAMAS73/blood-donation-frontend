@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# Blood Donation DApp Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A decentralized application (DApp) for managing blood donations on the Ethereum blockchain. This frontend interfaces with a smart contract deployed on the Sepolia testnet to facilitate blood donation management.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Donor Registration**: Register as a blood donor with personal details
+- **Blood Donation**: Record blood donations with different components
+- **Blood Withdrawal**: Hospital interface for withdrawing compatible blood units
+- **MetaMask Integration**: Secure blockchain transactions
+- **Sepolia Testnet**: Test environment for the DApp
 
-### `npm start`
+## Smart Contract Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Blood type compatibility checking
+- Multiple blood components support (Whole Blood, PRC, FFP)
+- Donor eligibility verification
+- Hospital-based blood unit tracking
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+- Node.js and npm installed
+- MetaMask browser extension
+- Sepolia testnet ETH for transactions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd blood-donation-frontend
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Install dependencies:
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Configure the application:
+- The smart contract is deployed at: `0x7AB020f7D665D3AEE63DD8C7E19106299fFF6e27` on Sepolia testnet
+- Ensure MetaMask is connected to Sepolia testnet
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. Start the development server:
+```bash
+npm start
+```
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Register as a Donor
+- Connect MetaMask to Sepolia testnet
+- Fill in the registration form with:
+  - Full name
+  - Blood type
+  - Weight (minimum 45kg)
+  - Height
+  - Age (17-70 years)
+  - National ID
+  - Disease status
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2. Donate Blood
+- Select blood component:
+  - Whole Blood
+  - PRC (Packed Red Cells)
+  - FFP (Fresh Frozen Plasma)
+- Confirm the transaction in MetaMask
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 3. Withdraw Blood (Hospitals)
+- Enter recipient's blood type
+- Select required component
+- Specify quantity (in ml)
+- Enter hospital name
+- System automatically checks blood type compatibility
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Blood Type Compatibility Chart
 
-## Learn More
+| Donor    | Can Give To                           |
+|----------|---------------------------------------|
+| O-       | All blood types                       |
+| O+       | O+, A+, B+, AB+                       |
+| A-       | A-, A+, AB-, AB+                      |
+| A+       | A+, AB+                               |
+| B-       | B-, B+, AB-, AB+                      |
+| B+       | B+, AB+                               |
+| AB-      | AB-, AB+                              |
+| AB+      | AB+ only                              |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Technical Details
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Technologies Used
+- React.js
+- ethers.js v6
+- MetaMask
+- Ethereum (Sepolia testnet)
 
-### Code Splitting
+### Smart Contract Integration
+- Contract Address: `0x7AB020f7D665D3AEE63DD8C7E19106299fFF6e27`
+- Network: Sepolia Testnet
+- Interface: ethers.js Contract instance
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Component Structure
+```
+src/
+├── components/
+│   ├── RegisterDonor.js
+│   ├── DonateBlood.js
+│   └── WithdrawBlood.js
+├── contract/
+│   ├── abi.json
+│   └── config.js
+└── App.js
+```
 
-### Analyzing the Bundle Size
+## Error Handling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The application includes comprehensive error handling for:
+- MetaMask connection issues
+- Network switching
+- Transaction failures
+- Form validation
+- Smart contract reverts
 
-### Making a Progressive Web App
+## Development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Available Scripts
 
-### Advanced Configuration
+- `npm start`: Run development server
+- `npm build`: Create production build
+- `npm test`: Run tests
+- `npm eject`: Eject from Create React App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the LICENSE file for details.
